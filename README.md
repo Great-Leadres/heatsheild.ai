@@ -1,60 +1,16 @@
-# HeatShield AI
+# React + Vite
 
-### AI-Powered Urban Heat Intelligence & Risk Detection
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-HeatShield AI is an urban heat intelligence platform that transforms satellite-derived temperature data into actionable heat-risk insights.
+Currently, two official plugins are available:
 
-The system analyzes geographic temperature tiles, identifies heat hotspots, calculates an overall risk score, and generates recommended actions through an automated decision agent.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
----
+## React Compiler
 
-## Problem
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Extreme urban heat is not distributed evenly across a city.
+## Expanding the ESLint configuration
 
-Certain neighborhoods can experience significantly higher temperatures because of dense buildings, limited vegetation, paved surfaces, and other urban characteristics.
-
-HeatShield AI helps transform raw geographic temperature data into an easy-to-understand picture of:
-
--  Temperature conditions
--  Heat hotspots
--  Overall heat risk
--  Recommended response actions
-
----
-
-## Solution
-
-HeatShield AI follows a simple intelligence pipeline:
-
-Satellite / Geographic Temperature Data
-               
-                
-                ↓
-
-                
-        Heatmap Processing
-             
-                
-                ↓
-
-                
-          Heat Analysis
-             
-                
-                ↓
-
-                
-          Risk Engine
-              
-                
-                ↓
-
-                
-       AI Decision Agent
-              
-                
-                ↓
-
-                
-     Actionable Recommendations
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
