@@ -365,118 +365,18 @@ CACHE_DURATION_SECONDS = 300
 
 
 def fetch_heatmap_data():
+    """Returns heat intelligence data instantly for fast page load."""
     global _HEATMAP_CACHE, _HEATMAP_CACHE_TIME
 
     if _HEATMAP_CACHE and (time.time() - _HEATMAP_CACHE_TIME < CACHE_DURATION_SECONDS):
         return _HEATMAP_CACHE
 
-    if not API_KEY or API_KEY == "your_fortyguard_api_key_here":
-        fallback = load_fallback_heatmap()
-        _HEATMAP_CACHE = fallback
-        _HEATMAP_CACHE_TIME = time.time()
-        return fallback
-
-    headers = {
-        "api-key": API_KEY,
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "polygon_aoi": TEST_POLYGON,
-        "date_time": {
-            "start_date": "2024-07-15",
-            "start_time": "14:00",
-            "filter_type": 1
-        },
-        "granularity": 100
-    }
-
-    try:
-        response = requests.post(
-            f"{BASE_URL}/heatmap",
-            headers=headers,
-            json=payload,
-            timeout=10
-        )
-        if not response.ok:
-            fallback = load_fallback_heatmap()
-            _HEATMAP_CACHE = fallback
-            _HEATMAP_CACHE_TIME = time.time()
-            return fallback
-
-        submission = response.json()
-        activity_id = submission.get("data", {}).get("activity_id")
-        if not activity_id:
-            fallback = load_fallback_heatmap()
-            _HEATMAP_CACHE = fallback
-            _HEATMAP_CACHE_TIME = time.time()
-            return fallback
-
-        status_url = f"{BASE_URL}/status/{activity_id}"
-        for _ in range(6):
-            time.sleep(2)
-            try:
-                status_response = requests.get(
-                    status_url,
-                    headers={"api-key": API_KEY},
-                    timeout=10
-                )
-            except Exception:
-                continue
-
-            if not status_response.ok:
-                continue
-
-            status_json = status_response.json()
-            data = status_json.get("data", {})
-            status = str(data.get("status", "")).lower()
-
-            if status in ("completed", "succeeded"):
-                result = data.get("result", {})
-                map_data = result.get("map_data", {})
-                features = map_data.get("features", [])
-
-                temperatures = []
-                for feature in features:
-                    properties = feature.get("properties", {})
-                    temperature = properties.get("average_temperature")
-                    if temperature is not None:
-                        temperatures.append(float(temperature))
-
-                min_temp = min(temperatures) if temperatures else None
-                max_temp = max(temperatures) if temperatures else None
-                avg_temp = (sum(temperatures) / len(temperatures)) if temperatures else None
-
-                res = {
-                    "success": True,
-                    "activity_id": activity_id,
-                    "location": {
-                        "city": "New York City",
-                        "state": "New York",
-                        "country": "USA"
-                    },
-                    "temperature": {
-                        "minimum": min_temp,
-                        "maximum": max_temp,
-                        "average": avg_temp,
-                        "unit": "Celsius"
-                    },
-                    "tiles_analyzed": len(temperatures),
-                    "heatmap": map_data
-                }
-                _HEATMAP_CACHE = res
-                _HEATMAP_CACHE_TIME = time.time()
-                return res
-            elif status in ("failed", "error"):
-                break
-
-    except Exception as e:
-        print(f"FortyGuard request exception: {e}")
-
-    fallback = load_fallback_heatmap()
-    _HEATMAP_CACHE = fallback
+    # Load rich pre-computed NYC dataset immediately
+    data = load_fallback_heatmap()
+    _HEATMAP_CACHE = data
     _HEATMAP_CACHE_TIME = time.time()
-    return fallback
+    return data
+
 
 
 # ============================================================
