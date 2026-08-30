@@ -24,50 +24,47 @@ function App() {
   const [error, setError] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
 
-  // --------------------------------------------------
+// --------------------------------------------------
   // Get heatmap
   // --------------------------------------------------
 
- useEffect(() => {
-  Promise.all([
-    fetch("http://127.0.0.1:8000/api/heatmap"),
-    fetch("http://127.0.0.1:8000/api/risk"),
-     fetch("http://127.0.0.1:8000/api/agent")
-  ])
-    .then(async ([heatmapResponse, riskResponse, agentResponse]) => {
-        
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/heatmap"),
+      fetch("/api/risk"),
+      fetch("/api/agent")
+    ])
+      .then(async ([heatmapResponse, riskResponse, agentResponse]) => {
+        if (!heatmapResponse.ok) {
+          throw new Error("Failed to fetch heatmap data");
+        }
 
-      if (!heatmapResponse.ok) {
-        throw new Error("Failed to fetch heatmap data");
-      }
+        if (!riskResponse.ok) {
+          throw new Error("Failed to fetch risk data");
+        }
 
-      if (!riskResponse.ok) {
-        throw new Error("Failed to fetch risk data");
-      }
-
-             if (!agentResponse.ok) {
+        if (!agentResponse.ok) {
           throw new Error("Failed to fetch agent data");
-      }
+        }
 
-      const heatmap = await heatmapResponse.json();
-      const risk = await riskResponse.json();
-
-      return {
-        heatmap,
-        risk,
-        agent
-      };
-    })
-    .then((result) => {
-
-      setData(result.heatmap);
-      setRiskData(result.risk);
-      setAgentData(result.agent);
-    })
-    .catch((err) => {
-      setError(err.message);
-    });
-}, []);
+        const heatmap = await heatmapResponse.json();
+        const risk = await riskResponse.json();
+        const agent = await agentResponse.json();
+        return {
+          heatmap,
+          risk,
+          agent
+        };
+      })
+      .then((result) => {
+        setData(result.heatmap);
+        setRiskData(result.risk);
+        setAgentData(result.agent);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  }, []);
 
   // --------------------------------------------------
   // Analyze heat risk
@@ -77,7 +74,7 @@ function App() {
     setAnalyzing(true);
     setError(null);
 
-    fetch("http://127.0.0.1:8000/api/analysis")
+    fetch("/api/analysis")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to analyze heat risk");
