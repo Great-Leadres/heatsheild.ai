@@ -28,13 +28,33 @@ HeatShield AI helps transform raw geographic temperature data into an easy-to-un
 HeatShield AI follows a simple intelligence pipeline:
 
 Satellite / Geographic Temperature Data
+               
+                
                 ↓
+
+                
         Heatmap Processing
+             
+                
                 ↓
+
+                
           Heat Analysis
+             
+                
                 ↓
+
+                
           Risk Engine
+              
+                
                 ↓
+
+                
        AI Decision Agent
+              
+                
                 ↓
+
+                
      Actionable Recommendations
