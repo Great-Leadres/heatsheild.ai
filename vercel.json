@@ -2,7 +2,10 @@
   "builds": [
     {
       "src": "frontend/package.json",
-      "use": "@vercel/vite"
+      "use": "@vercel/vite",
+      "config": {
+        "distDir": "dist"
+      }
     },
     {
       "src": "api/index.py",
@@ -13,6 +16,9 @@
     {
       "src": "/api/(.*)",
       "dest": "api/index.py"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
