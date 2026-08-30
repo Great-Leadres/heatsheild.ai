@@ -10,10 +10,10 @@ import "leaflet/dist/leaflet.css";
 import "./App.css";
 
 // Backend URL
-// Local: http://127.0.0.1:8000
-// Netlify: set VITE_API_URL to your deployed Render backend URL
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+// On Vercel: Relative path "" routes to /api serverless functions
+// Local Dev: Vite proxy forwards /api to http://127.0.0.1:8000
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 
 
 function getTemperatureColor(temp) {
