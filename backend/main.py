@@ -272,6 +272,7 @@ def fetch_heatmap_data():
 
 @app.get("/")
 @app.get("/api")
+@app.get("/api/")
 def home():
     return {
         "name": "HeatShield AI",
@@ -281,7 +282,9 @@ def home():
 
 
 @app.get("/health")
+@app.get("/health/")
 @app.get("/api/health")
+@app.get("/api/health/")
 def health():
     return {
         "status": "healthy"
@@ -293,7 +296,9 @@ def health():
 # ============================================================
 
 @app.get("/heatmap")
+@app.get("/heatmap/")
 @app.get("/api/heatmap")
+@app.get("/api/heatmap/")
 def get_heatmap():
     return fetch_heatmap_data()
 
@@ -303,7 +308,9 @@ def get_heatmap():
 # ============================================================
 
 @app.get("/analysis")
+@app.get("/analysis/")
 @app.get("/api/analysis")
+@app.get("/api/analysis/")
 def get_analysis():
     heatmap_response = fetch_heatmap_data()
     heatmap = heatmap_response.get("heatmap", {})
@@ -323,7 +330,9 @@ def get_analysis():
 # ============================================================
 
 @app.get("/risk")
+@app.get("/risk/")
 @app.get("/api/risk")
+@app.get("/api/risk/")
 def get_risk():
     heatmap_response = fetch_heatmap_data()
     heatmap = heatmap_response.get("heatmap", {})
@@ -345,7 +354,9 @@ def get_risk():
 # ============================================================
 
 @app.get("/agent")
+@app.get("/agent/")
 @app.get("/api/agent")
+@app.get("/api/agent/")
 def get_agent_decision():
     heatmap_response = fetch_heatmap_data()
     heatmap = heatmap_response.get("heatmap", {})
@@ -361,4 +372,5 @@ def get_agent_decision():
         "risk": risk,
         "analysis": analysis,
         "agent": decision
-    }
+    }
+
